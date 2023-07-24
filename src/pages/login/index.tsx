@@ -1,17 +1,17 @@
-import { FormEvent, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import agent from "../../Agent";
-import EyeClosed from "../../assets/eye-closed.svg";
-import EyeOpen from "../../assets/eye-open.svg";
-import Button from "../../components/Button";
+import { FormEvent, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import agent from '../../Agent';
+import EyeClosed from '../../assets/eye-closed.svg';
+import EyeOpen from '../../assets/eye-open.svg';
+import Button from '../../components/Button';
 
 export default function Login(props: {}) {
   const [form, setForm] = useState({
-    identifier: "",
-    password: "",
+    identifier: '',
+    password: '',
     loading: false,
     error: null,
-    service: "",
+    service: ''
   });
 
   const [showPassword, setShowPassword] = useState(false);
@@ -23,9 +23,9 @@ export default function Login(props: {}) {
     setForm((prev) => ({ ...prev, loading: true }));
     try {
       if (form.service.length) {
-        if (!form.service.startsWith("https://")) {
+        if (!form.service.startsWith('https://')) {
           // @ts-ignore
-          setForm((prev) => ({ ...prev, error: "Service Url is not valid" }));
+          setForm((prev) => ({ ...prev, error: 'Service Url is not valid' }));
           return;
         }
         // @ts-ignore
@@ -33,13 +33,13 @@ export default function Login(props: {}) {
       }
 
       const result = await agent.login({
-        identifier: form.identifier.includes(".")
+        identifier: form.identifier.includes('.')
           ? form.identifier
           : `${form.identifier}.bsky.social`,
-        password: form.password,
+        password: form.password
       });
       if (result.success) {
-        navigate("/");
+        navigate('/');
       }
     } catch (err: any) {
       console.error(err.message);
@@ -59,19 +59,15 @@ export default function Login(props: {}) {
                 type="text"
                 placeholder="Identifier ( ex: me.bsky.social )"
                 value={form.identifier}
-                onChange={(e) =>
-                  setForm((prev) => ({ ...prev, identifier: e.target.value }))
-                }
+                onChange={(e) => setForm((prev) => ({ ...prev, identifier: e.target.value }))}
               />
             </div>
             <div className="input-wrapper">
               <input
-                type={showPassword ? "text" : "password"}
+                type={showPassword ? 'text' : 'password'}
                 placeholder="Password"
                 value={form.password}
-                onChange={(e) =>
-                  setForm((prev) => ({ ...prev, password: e.target.value }))
-                }
+                onChange={(e) => setForm((prev) => ({ ...prev, password: e.target.value }))}
               />
               <img
                 src={showPassword ? EyeOpen : EyeClosed}
@@ -80,8 +76,8 @@ export default function Login(props: {}) {
               />
             </div>
             <Button text="Login" className="btn" loading={form.loading} />
-            {form.error ? <p className="error text-center">{form.error}</p> : ""}
-            <p style={{ textAlign: "center" }}>
+            {form.error ? <p className="error text-center">{form.error}</p> : ''}
+            <p style={{ textAlign: 'center' }}>
               Teal requires an existing <a href="https://blueskyweb.xyz/">Bluesky</a> account
             </p>
           </form>

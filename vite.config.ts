@@ -5,10 +5,10 @@ import { VitePWA, VitePWAOptions } from 'vite-plugin-pwa';
 
 const pwaOptions: Partial<VitePWAOptions> = {
   manifest: {
-    name: "teal",
-    short_name: "teal",
-    description: "teal | A Kepler Bluesky Web Client",
-    theme_color: "#111",
+    name: 'teal',
+    short_name: 'teal',
+    description: 'teal | A Kepler Bluesky Web Client',
+    theme_color: '#111',
     icons: [
       {
         src: '192x192.png',
@@ -22,7 +22,7 @@ const pwaOptions: Partial<VitePWAOptions> = {
       }
     ]
   },
-  registerType: "prompt",
+  registerType: 'prompt',
   workbox: {
     globPatterns: ['**/*.{js,css,html,ico,png,svg,woff,woff2,ttf,eot}']
   },
@@ -31,13 +31,9 @@ const pwaOptions: Partial<VitePWAOptions> = {
   }
 };
 
-const replaceOptions = { __DATE__: new Date().toISOString() }
+const replaceOptions = { __DATE__: new Date().toISOString() };
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  plugins: [
-    react(),
-    VitePWA(pwaOptions),
-    replace(replaceOptions)
-  ],
-})
+  plugins: [react(), VitePWA(pwaOptions), replace(replaceOptions)]
+});

@@ -1,36 +1,32 @@
-import {
-  EthereumClient,
-  w3mConnectors,
-  w3mProvider,
-} from "@web3modal/ethereum";
-import { configureChains, createConfig } from "wagmi";
-import { polygon, mainnet, goerli, sepolia } from "wagmi/chains";
-import { type WalletClient } from "@wagmi/core";
-import { providers } from "ethers";
+import { EthereumClient, w3mConnectors, w3mProvider } from '@web3modal/ethereum';
+import { configureChains, createConfig } from 'wagmi';
+import { polygon, mainnet, goerli, sepolia } from 'wagmi/chains';
+import { type WalletClient } from '@wagmi/core';
+import { providers } from 'ethers';
 
 // 1. Get projectID at https://cloud.walletconnect.com
 if (!import.meta.env.VITE_PROJECT_ID) {
-  console.error("You need to provide VITE_PROJECT_ID env variable");
+  console.error('You need to provide VITE_PROJECT_ID env variable');
 }
 
-export const projectId = import.meta.env.VITE_PROJECT_ID ?? "";
+export const projectId = import.meta.env.VITE_PROJECT_ID ?? '';
 
 // 2. Configure wagmi client
 const chains = [mainnet, goerli, sepolia, polygon];
 
 const { publicClient } = configureChains(chains, [
   w3mProvider({
-    projectId,
-  }),
+    projectId
+  })
 ]);
 
 export const wagmiConfig = createConfig({
   autoConnect: false,
   connectors: w3mConnectors({
     projectId,
-    chains,
+    chains
   }),
-  publicClient,
+  publicClient
 });
 
 // 3. Configure modal ethereum client
@@ -41,7 +37,7 @@ export function walletClientToEthers5Signer(walletClient: WalletClient) {
   const network = {
     chainId: chain.id,
     name: chain.name,
-    ensAddress: chain.contracts?.ensRegistry?.address,
+    ensAddress: chain.contracts?.ensRegistry?.address
   };
   const provider = new providers.Web3Provider(transport, network);
   const signer = provider.getSigner(account.address);
