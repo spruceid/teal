@@ -159,22 +159,21 @@ body {
 
 .login-page {
     height: 100vh;
-    align-self: center;
     display: flex;
-    padding-left: 55vh;
-    padding-right: 55vh;
     align-items: center;
     justify-content: center;
     background: var(--white-color);
     overflow: hidden;
   
     &__left {
-      width: 600px;
-      padding: 0 4rem;
+      width: 400px; /* Adjust the width as needed */
+      margin: 0 auto; /* Center the login form horizontally */
+      padding: 0 2rem; /* Add padding as needed */
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
+  
       @media screen and (max-width: 1024px) {
         padding: 3rem 1rem;
       }
@@ -787,6 +786,13 @@ button {
         position: relative;
     }
 }
+
+.login-container {
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 
 .select-wrapper {
     position: relative;
