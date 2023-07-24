@@ -12,7 +12,7 @@
     "dependencies": {
         "@atproto/api": "latest",
         "@rollup/plugin-replace": "^5.0.2",
-        "@spruceid/ssx": "^2.0.0-beta.0",
+        "@spruceid/ssx": "^2.0.0",
         "@web3modal/ethereum": "2.0.0-rc.2",
         "@web3modal/react": "2.0.0-rc.2",
         "jotai": "^2.0.4",
