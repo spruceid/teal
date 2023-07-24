@@ -93,7 +93,7 @@ const SIWE = (props : any) => {
       <SignInModal showModal={showSignInModal} onClose={closeSignInModal}>
         <h2>Sign in With Ethereum + Authorization</h2>
         <div>
-          Sign in With Ethereum and authorize SSX Quest to have access to
+          Sign in With Ethereum and authorize Teal to have access to
           read/write to your data vault. By logging in you accept our&nbsp;
           <a href="https://spruceid.com/termsofuse">terms of use</a>&nbsp;and&nbsp;
           <a href="https://spruceid.com/privacypolicy">privacy policy</a>.
