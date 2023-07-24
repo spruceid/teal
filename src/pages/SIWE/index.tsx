@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
 import { SSX } from '@spruceid/ssx';
-import { useSigner, useAccount } from 'wagmi';
+import { useAccount, useWalletClient } from 'wagmi';
 import { useWeb3Modal } from "@web3modal/react";
 import SignInModal from '../../components/SignInModal'
+import { walletClientToEthers5Signer } from '../../utils/web3modalV2Settings';
+import { getWalletClient } from '@wagmi/core'
 
 const SIWE = (props : any) => {
   const { posts, likes, media } = props;
@@ -12,9 +14,12 @@ const SIWE = (props : any) => {
 
   const { isConnected } = useAccount();
   const { open: openWeb3Modal } = useWeb3Modal();
-  const { data: signer, isLoading: wagmiIsLoading } = useSigner();
+  const { data: walletClient } = useWalletClient()
 
-  const initSSX = async (signer: any) => {
+  const initSSX = async () => {
+    const chainId = await walletClient?.getChainId();
+    const newWalletClient = await getWalletClient({ chainId });
+    const signer = walletClientToEthers5Signer(newWalletClient as any);
     if (signer) {
       let ssxConfig = {
         providers: {
@@ -25,7 +30,7 @@ const SIWE = (props : any) => {
         modules: {
           storage: {
             prefix: 'teal',
-            hosts: ['kepler.spruceid.xyz'],
+            hosts: ['https://kepler.spruceid.xyz'],
             autoCreateNewOrbit: true,
           },
         },
@@ -45,8 +50,8 @@ const SIWE = (props : any) => {
   };
 
   useEffect(() => {
-    initSSX(signer);
-  }, [signer]);
+    initSSX();
+  }, [walletClient]);
 
   useEffect(() => {
     if (isConnected && ssxProvider) {
@@ -56,8 +61,8 @@ const SIWE = (props : any) => {
 
   const syncOrbit = () => {
     closeSyncModal();
-    likes.records.map((like:any) => store("like/"+like.cid, like));
-    posts.feed.map((post:any) => store("post/"+post.post.cid, post));
+    likes?.records?.map((like:any) => store("like/"+like.cid, like));
+    posts?.feed?.map((post:any) => store("post/"+post.post.cid, post));
     setShowSuccessModal(true);
   };
 
