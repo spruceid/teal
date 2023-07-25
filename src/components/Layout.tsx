@@ -27,7 +27,7 @@ export default function Layout(props: {
         const data = await agent.getProfile({
           actor: parsedData.did
         });
-        setUser(data.data);
+        (setUser as any)(data.data);
         return data;
       } catch (error) {
         console.error(error);
