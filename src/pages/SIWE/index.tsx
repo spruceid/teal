@@ -135,18 +135,22 @@ const SIWE = (props: any) => {
         </button>
       </SignInModal>
 
-      <button
-        onClick={syncOrbit}
-        style={{
-          color: '#323232',
-          backgroundColor: 'white',
-          border: 'white',
-          fontSize: '20px',
-          marginLeft: '-6px'
-        }}
-      >
-        <strong>sync</strong>
-      </button>
+      {
+        isConnected ? 
+        <button
+          onClick={syncOrbit}
+          style={{
+            color: '#323232',
+            backgroundColor: 'white',
+            border: 'white',
+            fontSize: '20px',
+            marginLeft: '-6px'
+          }}
+        >
+          <strong>sync</strong>
+        </button> :
+        null
+      }
 
       <SignInModal showModal={showSyncModal} onClose={closeSyncModal}>
         <h2>Wallet successfully connected!</h2>
