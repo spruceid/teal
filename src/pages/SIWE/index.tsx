@@ -4,7 +4,7 @@ import { useAccount, useWalletClient } from 'wagmi';
 import { useWeb3Modal } from '@web3modal/react';
 import SignInModal from '../../components/SignInModal';
 import { walletClientToEthers5Signer } from '../../utils/web3modalV2Settings';
-import { getWalletClient } from '@wagmi/core';
+import { getWalletClient, disconnect } from '@wagmi/core';
 
 const SIWE = (props: any) => {
   const { posts, likes, media } = props;
@@ -14,8 +14,12 @@ const SIWE = (props: any) => {
   const [showKeplerModal, setShowKeplerModal] = useState(false);
 
   const { isConnected } = useAccount();
-  const { open: openWeb3Modal } = useWeb3Modal();
+  const { open: openWeb3Modal, isOpen } = useWeb3Modal();
   const { data: walletClient } = useWalletClient();
+
+  useEffect(() => {
+    disconnect()
+  }, []);
 
   const initSSX = async () => {
     const chainId = await walletClient?.getChainId();
@@ -39,26 +43,20 @@ const SIWE = (props: any) => {
       };
 
       const ssx = new SSX(ssxConfig);
+      setSSX(ssx);
       try {
         await ssx.signIn();
-        setSSX(ssx);
         const hasOrbit = await ssx.storage.activateSession();
+        setShowSignInModal(false);
         setShowKeplerModal(!hasOrbit);
       } catch (err) {
         console.error(err);
       }
     } else {
+      setShowSignInModal(false);
       setSSX(null);
     }
   };
-
-  useEffect(() => {
-    if (isConnected && ssxProvider) closeSignInModal();
-  }, [isConnected, ssxProvider]);
-
-  useEffect(() => {
-    initSSX();
-  }, [walletClient]);
 
   const syncOrbit = () => {
     closeSyncModal();
@@ -77,12 +75,12 @@ const SIWE = (props: any) => {
     await ssxProvider?.storage.put(key, value);
   };
 
+  useEffect(() => {
+    if(isConnected) initSSX()
+  }, [walletClient]);
+
   const ssxHandler = async () => {
-    if (isConnected) {
-      initSSX();
-    } else {
-      await openWeb3Modal();
-    }
+    await openWeb3Modal();
   };
 
   const closeSyncModal = () => {

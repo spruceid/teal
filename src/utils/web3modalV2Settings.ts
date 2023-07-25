@@ -34,6 +34,7 @@ export const ethereumClient = new EthereumClient(wagmiConfig, chains);
 
 export function walletClientToEthers5Signer(walletClient: WalletClient) {
   const { account, chain, transport } = walletClient;
+  console.log(chain);
   const network = {
     chainId: chain.id,
     name: chain.name,

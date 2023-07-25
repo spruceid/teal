@@ -5,6 +5,8 @@ import { Link } from 'react-router-dom';
 import agent, { SESSION_LOCAL_STORAGE_KEY } from '../../Agent';
 import User from '../user';
 import SIWE from '../SIWE';
+import { useAccount } from 'wagmi';
+import { useWeb3Modal } from '@web3modal/react';
 
 export default function Home(props: {}) {
   const getUser = () => {
@@ -15,6 +17,8 @@ export default function Home(props: {}) {
     }
     return 'error';
   };
+
+  const { isConnected } = useAccount();
 
   const did = getUser();
   const userResults = useQuery(
@@ -108,6 +112,7 @@ export default function Home(props: {}) {
   const [posts, setPosts] = useState<any>(postResults?.data! || null);
   const [likes, setLikes] = useState<any>(likesResults?.data! || null);
   const [media, setMedia] = useState<any>(mediaResults?.data! || null);
+  const { open: openWeb3Modal } = useWeb3Modal();
 
   return (
     <div style={{ display: 'flex', flexDirection: 'row', justifyItems: 'left' }}>
@@ -125,6 +130,19 @@ export default function Home(props: {}) {
         >
           <strong>Logout</strong>
         </Link>
+        <strong
+          onClick={openWeb3Modal} 
+          style={{
+            marginTop: '2rem',
+            alignSelf: 'left',
+            color: '#323232',
+            backgroundColor: 'white',
+            border: 'white',
+            fontSize: '20px',
+            cursor: 'pointer'
+          }}>
+            {isConnected ? "disconnect" : "connect"}
+          </strong>
         <div style={{ marginTop: '2rem' }}>
           <SIWE posts={posts} likes={likes} media={media} />
         </div>
