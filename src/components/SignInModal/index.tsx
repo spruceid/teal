@@ -25,6 +25,13 @@ const SignInModal = ({ showModal, onClose, children }: SignInModalProps) => {
         backgroundColor: 'rgba(0, 0, 0, 0.5)',
         zIndex: 10
       }}
+      id='backdrop'
+      onMouseDown={(event): void => {
+        const me = document.getElementById('backdrop')
+        if(event.target === me) {
+          onClose?.();
+        }
+      }}
     >
       <div
         style={{
@@ -33,7 +40,8 @@ const SignInModal = ({ showModal, onClose, children }: SignInModalProps) => {
           backgroundColor: 'rgba(255, 255, 255, 0.9)',
           textAlign: 'center',
           display: 'flex',
-          flexDirection: 'column'
+          flexDirection: 'column',
+          zIndex: 20,
         }}
       >
         {children}

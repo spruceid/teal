@@ -85,23 +85,27 @@ const SIWE = (props: any) => {
   };
 
   const closeSyncModal = () => {
+    disconnect();
     setShowSyncModal(false);
   };
 
   const closeSuccessModal = () => {
+    disconnect();
     setShowSuccessModal(false);
   };
 
   const closeKeplerModal = () => {
+    disconnect();
     setShowKeplerModal(false);
+  };
+
+  const closeSignInModal = () => {
+    disconnect();
+    setShowSignInModal(false);
   };
 
   const handleSignIn = async () => {
     await ssxHandler();
-  };
-
-  const closeSignInModal = () => {
-    setShowSignInModal(false);
   };
 
   return (
