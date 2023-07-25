@@ -11,6 +11,7 @@ const SIWE = (props: any) => {
   const [ssxProvider, setSSX] = useState<SSX | null>(null);
   const [showSyncModal, setShowSyncModal] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
+  const [showKeplerModal, setShowKeplerModal] = useState(false);
 
   const { isConnected } = useAccount();
   const { open: openWeb3Modal } = useWeb3Modal();
@@ -41,6 +42,8 @@ const SIWE = (props: any) => {
       try {
         await ssx.signIn();
         setSSX(ssx);
+        const hasOrbit = await ssx.storage.activateSession();
+        setShowKeplerModal(!hasOrbit);
       } catch (err) {
         console.error(err);
       }
@@ -57,17 +60,17 @@ const SIWE = (props: any) => {
     initSSX();
   }, [walletClient]);
 
-  useEffect(() => {
-    if (isConnected && ssxProvider) {
-      setShowSyncModal(true);
-    }
-  }, [ssxProvider]);
-
   const syncOrbit = () => {
     closeSyncModal();
     likes?.records?.map((like: any) => store('like/' + like.cid, like));
     posts?.feed?.map((post: any) => store('post/' + post.post.cid, post));
     setShowSuccessModal(true);
+  };
+
+  const createDataVault = async () => {
+    await ssxProvider?.storage.hostOrbit();
+    setShowKeplerModal(false);
+    setShowSyncModal(true);
   };
 
   const store = async (key: any, value: any) => {
@@ -88,6 +91,10 @@ const SIWE = (props: any) => {
 
   const closeSuccessModal = () => {
     setShowSuccessModal(false);
+  };
+
+  const closeKeplerModal = () => {
+    setShowKeplerModal(false);
   };
 
   const handleSignIn = async () => {
@@ -115,6 +122,18 @@ const SIWE = (props: any) => {
           style={{ marginTop: '20px', padding: '10px 20px', fontSize: '16px' }}
         >
           Sign In
+        </button>
+      </SignInModal>
+
+      <SignInModal showModal={showKeplerModal} onClose={closeKeplerModal}>
+        <h2>Create Data Vault</h2>
+        You don't currently have a data vault. <br/>
+          Sign the message to create your data vault.
+        <button
+          onClick={createDataVault}
+          style={{ marginTop: '20px', padding: '10px 20px', fontSize: '16px' }}
+        >
+          CREATE DATA VAULT
         </button>
       </SignInModal>
 
