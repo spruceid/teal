@@ -12,6 +12,7 @@ const SIWE = (props: any) => {
   const [showSyncModal, setShowSyncModal] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [showKeplerModal, setShowKeplerModal] = useState(false);
+  const [showSignInModal, setShowSignInModal] = useState(false);
 
   const { isConnected } = useAccount();
   const { open: openWeb3Modal, isOpen } = useWeb3Modal();
@@ -99,8 +100,6 @@ const SIWE = (props: any) => {
     await ssxHandler();
   };
 
-  const [showSignInModal, setShowSignInModal] = useState(true);
-
   const closeSignInModal = () => {
     setShowSignInModal(false);
   };
@@ -135,19 +134,40 @@ const SIWE = (props: any) => {
         </button>
       </SignInModal>
 
+      <strong
+          onClick={() => {
+            if(isConnected) {
+              disconnect()
+            } else {
+              setShowSignInModal(true)
+            }
+          }} 
+          style={{
+            marginTop: '2rem',
+            alignSelf: 'left',
+            color: '#323232',
+            backgroundColor: 'white',
+            border: 'white',
+            fontSize: '20px',
+            cursor: 'pointer'
+          }}>
+          {isConnected ? "Disconnect" : "Connect"}<br/>
+        </strong>
       {
         isConnected ? 
         <button
           onClick={syncOrbit}
           style={{
             color: '#323232',
+            marginTop: '2rem',
             backgroundColor: 'white',
             border: 'white',
             fontSize: '20px',
+            cursor: 'pointer',
             marginLeft: '-6px'
           }}
         >
-          <strong>sync</strong>
+          <strong>Sync</strong>
         </button> :
         null
       }

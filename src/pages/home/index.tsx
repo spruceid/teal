@@ -130,19 +130,6 @@ export default function Home(props: {}) {
         >
           <strong>Logout</strong>
         </Link>
-        <strong
-          onClick={openWeb3Modal} 
-          style={{
-            marginTop: '2rem',
-            alignSelf: 'left',
-            color: '#323232',
-            backgroundColor: 'white',
-            border: 'white',
-            fontSize: '20px',
-            cursor: 'pointer'
-          }}>
-            {isConnected ? "disconnect" : "connect"}
-          </strong>
         <div style={{ marginTop: '2rem' }}>
           <SIWE posts={posts} likes={likes} media={media} />
         </div>
